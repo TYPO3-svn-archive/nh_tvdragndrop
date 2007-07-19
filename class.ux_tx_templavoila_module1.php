@@ -201,9 +201,8 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
 					$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
 				}
-				 //Create sortables
 
-				//unset($this->sortable_containers);
+				 //Create sortables
 				if (is_array($this->sortable_containers)) {
 					//$this->content .='<div id="sortableDebug"></div>';
 					$this->content .='
@@ -487,8 +486,9 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			$finalContent .= $this->link_new($newIcon, $parentPointer);
 
 			$finalContent .= '<span class="sortablePaste">'.$this->clipboardObj->element_getPasteButtons ($parentPointer).'</span>';
+			$finalContent = '<div class="sortableItem" id="'.$this->apiObj->flexform_getStringFromPointer($parentPointer).'">'.$finalContent.'</div>';
 		}
-		$finalContent = '<div class="sortableItem" id="'.$this->apiObj->flexform_getStringFromPointer($parentPointer).'">'.$finalContent.'</div>';
+
 		return $finalContent;
 	}
 
@@ -582,7 +582,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					$cellID=$this->apiObj->flexform_getStringFromPointer($tmpArr);
 					$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
 					$cells[]='<td id="'.$cellID.'" valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
-					$this->sortable_containers[]=$cellID;
+					if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent')) $this->sortable_containers[]=$cellID;
 				}
 			}
 		}
