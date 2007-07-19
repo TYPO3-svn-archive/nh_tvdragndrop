@@ -38,6 +38,14 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 				$this->apiObj->moveElement ($sourcePointer, $destinationPointer);
 				exit;
 			}
+
+			if (t3lib_div::_GP("ajaxUnlinkRecord")) {
+				$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('ajaxUnlinkRecord'));
+				$this->apiObj->unlinkElement($unlinkDestinationPointer);
+				exit;
+			}
+
+
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
 				// Define the root element record:
 			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
@@ -131,14 +139,17 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 				// IE resize workaround
+
 			$this->doc->inDocStyles .= '
-				.sortableItem {width:100%;}
+				table {position:relative;};
 			';
+
 			if (t3lib_extMgm::isLoaded('t3skin')) {
 		      // Fix padding for t3skin in disabled tabs
         $this->doc->inDocStyles .= '
 	 	  	 table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
         ';
+
       }
 			$this->handleIncomingCommands();
 
@@ -200,16 +211,34 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					<!--
 					var sortable_currentItem;
 
+					function sortable_unlinkRecordCallBack(obj) {
+						var el = obj.element;
+						var pn = el.parentNode;
+						//alert (pn.id);
+						pn.removeChild(el);
+						sortable_update(pn);
+					}
+
+					function sortable_unlinkRecord(id) {
+						new Ajax.Request("index.php?'.$this->link_getParameters().'&ajaxUnlinkRecord="+escape(id));
+						new Effect.Fade(id,
+							{ duration: 0.5,
+							  afterFinish: sortable_unlinkRecordCallBack });
+					}
+
 					function sortable_updateItemButtons(el, position, pID) {
 						var p	= new Array();	var p1 = new Array();
 						var href = "";	var i=0;
 						var newPos = escape(pID + position);
-						var buttons = el.getElementsByTagName("a");
+						var childs = el.childElements()
+						var buttons = childs[0].childElements()[0].childElements()[0].childElements()[1].childNodes;
 						for (i = 0; i < buttons.length ;i++) {
+							if (buttons[i].nodeType != 1) continue;
 							href = buttons[i].href;
+							//alert(href);
 							if (href.charAt(href.length - 1) == "#") continue;
-							if ((p = href.split("&unlinkRecord=")).length == 2) {
-								buttons[i].href = p[0] + "&unlinkRecord=" + newPos;
+							if ((p = href.split("unlinkRecord")).length == 2) {
+								buttons[i].href = p[0] + "unlinkRecord(\'" + newPos + "\');";
 							} else if((p = href.split("CB[el][tt_content")).length == 2) {
 								p1 = p[1].split("=");
 								buttons[i].href = p[0] + "CB[el][tt_content" + p1[0]+ "="  + newPos;
@@ -219,6 +248,15 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 								buttons[i].href = p[0] + "&destination=" + newPos;
 							}
 						}
+
+						if ((p = childs[1].href.split("&parentRecord=")).length == 2)
+								childs[1].href = p[0] + "&parentRecord=" + newPos;
+
+						buttons = childs[2].childElements()[0];
+						//alert(buttons.nodeName);
+						if (buttons && (p = buttons.href.split("&destination=")).length == 2)
+								buttons.href = p[0] + "&destination=" + newPos;
+
 					}
 
 					function sortable_updatePasteButtons(oldPos, newPos) {
@@ -239,8 +277,10 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					function sortable_update(el) {
 						var node = el.firstChild;
 						var i = 1;
+						//alert(\'update\');
 						while (node != null) {
 							if (node.className == "sortableItem") {
+								//alert(node.id);
 								if (sortable_currentItem && node.id == sortable_currentItem.id ) {
 									var url = "index.php?'.$this->link_getParameters().'&ajaxPasteRecord=cut&source=" + sortable_currentItem.id + "&destination=" + el.id + (i-1);
 									new Ajax.Request(url);
@@ -451,7 +491,8 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 		$finalContent = '<div class="sortableItem" id="'.$this->apiObj->flexform_getStringFromPointer($parentPointer).'">'.$finalContent.'</div>';
 		return $finalContent;
 	}
-function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet){
+
+	function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet){
 		global $LANG;
 
 		$beTemplate = '';
@@ -566,6 +607,18 @@ function render_framework_subElements($elementContentTreeArr, $languageKey, $she
 		}
 
 		return $output;
+	}
+
+	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
+		global $LANG;
+
+		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
+
+		if ($realDelete)	{
+			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
+		} else {
+			return '<a href="javascript:sortable_unlinkRecord(\''.$unlinkPointerString.'\');" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).');').'">'.$label.'</a>';
+		}
 	}
 }
 ?>
