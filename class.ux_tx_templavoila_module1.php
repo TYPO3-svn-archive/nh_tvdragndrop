@@ -141,7 +141,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 				// IE resize workaround
 
 			$this->doc->inDocStyles .= '
-				table {position:relative;};
+				table {position:relative;}
 			';
 
 			if (t3lib_extMgm::isLoaded('t3skin')) {
@@ -617,7 +617,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 		if ($realDelete)	{
 			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
 		} else {
-			return '<a href="javascript:sortable_unlinkRecord(\''.$unlinkPointerString.'\');" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).');').'">'.$label.'</a>';
+			return '<a href="javascript:'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).')) ').'sortable_unlinkRecord(\''.$unlinkPointerString.'\');">'.$label.'</a>';
 		}
 	}
 }
