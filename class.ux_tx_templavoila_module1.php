@@ -142,6 +142,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 
 			$this->doc->inDocStyles .= '
 				table {position:relative;}
+				.sortable_handle {cursor:move;}
 			';
 
 			if (t3lib_extMgm::isLoaded('t3skin')) {
@@ -456,7 +457,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 		$finalContent.='
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
 				<tbody>
-				<tr style="'.$elementTitlebarStyle.';" class="sortable_handle" onmouseover="document.body.style.cursor=\'move\'" onmouseout="document.body.style.cursor=\'default\'">
+				<tr style="'.$elementTitlebarStyle.';" class="sortable_handle">
 					<td style="vertical-align:top;"> '.
 						'<span class="nobr">'.
 						$languageIcon.
