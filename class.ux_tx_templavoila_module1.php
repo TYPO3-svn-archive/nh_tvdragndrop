@@ -571,19 +571,23 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					}
 				}
 
-					// Add cell content to registers:
-				if ($flagRenderBeLayout==TRUE) {
-					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
-					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
-				} else {
-							// Add cell content to registers:
-					//$cellID=$this->apiObj->$elementContentTreeArr['el']['table'].':'.$fieldID.':'.$elementContentTreeArr['el']['uid'];
+
+				$cellIdStr = '';
+				if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent')) {
 					$tmpArr=$subElementPointer;
 					unset($tmpArr['position']);
-					$cellID=$this->apiObj->flexform_getStringFromPointer($tmpArr);
+					$cellId = $this->apiObj->flexform_getStringFromPointer($tmpArr);
+					$cellIdStr = ' id="'.$cellId.'"';
+					$this->sortable_containers[] = $cellId;
+				}
+
+				 // Add cell content to registers:
+				if ($flagRenderBeLayout==TRUE) {
+					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td'.$cellIdStr.' valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
+					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
+				} else {
 					$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
-					$cells[]='<td id="'.$cellID.'" valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
-					if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent')) $this->sortable_containers[]=$cellID;
+					$cells[]='<td'.$cellIdStr.'" valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
 				}
 			}
 		}
