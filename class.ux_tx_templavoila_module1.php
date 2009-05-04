@@ -127,8 +127,9 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			);
 
 				//Prototype /Scriptaculous
-			$this->doc->JScode .= '<script src="'.$this->doc->backPath.t3lib_extMgm::extRelPath('nh_tvdragndrop').'js/prototype.js" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="'.$this->doc->backPath.t3lib_extMgm::extRelPath('nh_tvdragndrop').'js/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
+			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+			$this->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop');
+
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
