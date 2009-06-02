@@ -76,9 +76,10 @@ tx_nhtvdragndrop = function() {
 				return;
 
 			if (currentItem && item.id == currentItem.id) {
-				new Ajax.Request(url + '&ajaxPasteRecord=cut&source=' +
+				new Ajax.Request(url +
+					'&ajaxID=tx_nhtvdragndrop_ajax::moveRecord&source=' +
 					getPointerById(item.id)	+
-					"&destination=" + container.id + index);
+					"&destination=" + (container.id + index));
 
 				currentItem = false;
 
@@ -99,8 +100,8 @@ tx_nhtvdragndrop = function() {
 
 	};
 
-	pub.init = function(containers, linkParameters) {
-		url = 'index.php?' +  linkParameters;
+	pub.init = function(containers, linkParameters, siteRelPath) {
+		url =  siteRelPath + 'ajax.php?' +  linkParameters;
 		containers.each(function(c) {
 			Sortable.create(c, {
 				tag: 'div',
@@ -114,12 +115,14 @@ tx_nhtvdragndrop = function() {
 	};
 
 	pub.unlinkRecord = function(pointer) {
-		new Ajax.Request(url + '&ajaxUnlinkRecord=' + pointer, {
-			onComplete: function() {
-				$(getIdByPointer(pointer)).remove();
-				updateContainer($(getContainerIdByPointer(pointer)));
+		new Ajax.Request(url +
+			'&ajaxID=tx_nhtvdragndrop_ajax::unlinkRecord&unlink=' + pointer, {
+				onComplete: function() {
+					$(getIdByPointer(pointer)).remove();
+					updateContainer($(getContainerIdByPointer(pointer)));
+				}
 			}
-		});
+		);
 
 	};
 

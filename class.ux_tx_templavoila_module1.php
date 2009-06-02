@@ -30,21 +30,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			$access = (intval($pageInfoArr['uid'] > 0));
 		}
 
-		if ($access)    {
-
-			if (t3lib_div::_GP("ajaxPasteRecord") == 'cut') {
-				$sourcePointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('source'));
-				$destinationPointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('destination'));
-				$this->apiObj->moveElement ($sourcePointer, $destinationPointer);
-				exit;
-			}
-
-			if (t3lib_div::_GP("ajaxUnlinkRecord")) {
-				$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('ajaxUnlinkRecord'));
-				$this->apiObj->unlinkElement($unlinkDestinationPointer);
-				exit;
-			}
-
+		if ($access) {
 
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
 				// Define the root element record:
@@ -212,7 +198,8 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 						'document.observe("dom:loaded", function() { ' . 
 						'tx_nhtvdragndrop.init([\'' . 
 						implode('\',\'', $this->sortable_containers) . '\'], \'' .
-						$this->link_getParameters() . '\');})');														
+						$this->link_getParameters() . 
+						'\', \'' . $this->doc->backPath . '\');})');														
 				}
 			}
 
