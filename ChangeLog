@@ -1,5 +1,79 @@
-(add new changes on top of this file)
+2009-06-03 00:55:53 CEST  pulponair
 
-07-04-11 Nikolas Hagelstein  <nikolas.hagelstein@gmail.com>
+	Fixed paste button rewriting for references.
 
-	* Initial release
+2009-06-03 00:45:36 CEST  pulponair
+
+	Fixed "create reference" button rewriting.
+
+2009-06-03 00:36:20 CEST  pulponair
+
+	Improved performace by moving AJAX responder code to a seperate file.
+
+2009-06-02 23:17:18 CEST  pulponair
+
+	Fixed #0008929.
+
+2009-06-02 23:12:34 CEST  pulponair
+
+	Updated to TV 1.3.7
+
+2009-06-02 22:18:05 CEST  pulponair
+
+	Refactored JS code.
+
+2009-05-04 23:38:47 CEST  pulponair
+
+	Make use of contrib prototype & scriptaculous.
+
+2009-05-04 22:30:11 CEST  pulponair
+
+	Cleanup.
+
+2009-05-04 22:27:41 CEST  pulponair
+
+	Removed bogus whitespace.
+
+2007-09-17 16:08:21 CEST  pulponair
+
+	Updated manual.
+
+2007-09-17 15:57:22 CEST  pulponair
+
+	Added beLayout support.
+
+2007-09-17 15:18:05 CEST  pulponair
+
+	Added ext_icon.gif.
+
+2007-09-17 15:15:40 CEST  pulponair
+
+	Changed handle cursor to CSS
+
+2007-08-10 15:13:56 CEST  pulponair
+
+	Added cursor handle.
+
+2007-07-19 13:16:11 CEST  pulponair
+
+	Updated manual
+
+2007-07-19 12:53:20 CEST  pulponair
+
+	Small improvements.
+
+2007-07-19 10:04:53 CEST  pulponair
+
+	Respect canEditContent.
+
+2007-07-19 09:38:43 CEST  pulponair
+
+	Added ajax deletion. Fixed button updated.
+
+2007-07-18 18:14:26 CEST  pulponair
+
+	Initial import.
+
+2007-07-18 12:14:27 CEST  pulponair
+
+	Initial repository layout
