@@ -384,9 +384,10 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 		if (!$this->translatorMode && $canCreateNew)	{
 				// "New" and "Paste" icon:
 			$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
-			$finalContent .= $this->link_new($newIcon, $parentPointer);
-
-			$finalContent .= $this->clipboardObj->element_getPasteButtons ($parentPointer);
+			if (isset($parentPointer['position'])) {
+				$finalContent .= $this->link_new($newIcon, $parentPointer) .
+					$this->clipboardObj->element_getPasteButtons ($parentPointer);
+			}
 			$finalContent = '<div id="tx_nhtvdragndrop-item_'.$this->apiObj->flexform_getStringFromPointer($parentPointer).'">'.$finalContent.'</div>';
 		}
 
