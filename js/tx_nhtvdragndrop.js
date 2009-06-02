@@ -54,7 +54,8 @@ tx_nhtvdragndrop = function() {
 
 			if((p = button.href.split('CB[el][tt_content')).length == 2) {
 				p1 = p[1].split('=');
-				button.href = p[0] + 'CB[el][tt_content' + p1[0]+ '=' + newPointer;
+				if (p1[1] != '1')
+					button.href = p[0] + 'CB[el][tt_content' + p1[0]+ '=' + newPointer;
 			}
 
 		});
