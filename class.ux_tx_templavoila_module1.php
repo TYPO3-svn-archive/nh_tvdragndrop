@@ -268,9 +268,12 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			$menuCommands[] = 'new';
 		}
 		if ($canEditContent) {
-    	$menuCommands[] = 'copy,cut,pasteinto,pasteafter,delete';
+    		$menuCommands[] = 'copy,cut,pasteinto,pasteafter,delete';
+		} else {
+			$menuCommands[] = 'copy';
 		}
 		$titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), implode(',', $menuCommands)));
+		$titleBarLeftButtons.= $this->getRecordStatHookValue($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 		unset($menuCommands);
 
 
@@ -306,7 +309,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 					} else {
-						$linkEdit = '';
+						$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
 					}
 					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
 				} else {
@@ -350,8 +353,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 			$previewContent = '<div class="ver-element">'.($previewContent ? $previewContent : '<em>[New version]</em>').'</div>';
 		}
 
-			// Finally assemble the table:
-		$finalContent='';
+			// Finally assemble the table:		
 		$finalContent.='
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
 				<tbody>
@@ -439,7 +441,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 						// "New" and "Paste" icon:
 					$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 					$cellContent .= $this->link_new($newIcon, $subElementPointer);
-					$cellContent .= '<span class="sortablePaste">'.$this->clipboardObj->element_getPasteButtons ($subElementPointer).'</span>';
+					$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
