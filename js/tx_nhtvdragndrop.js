@@ -88,6 +88,10 @@ tx_nhtvdragndrop = function() {
 				if (pasteButtons = $$('a[href*="source"]')) {
 					pasteButtons.each(function(button) {
 						var queryParms = button.href.toQueryParams();
+							//todo: find a better way
+						if (queryParms['pasteRecord'] == 'ref');
+								return;
+
 						queryParms['source'] = container.id + (index + 1);
 						button.href =  'index.php?' + $H(queryParms).toQueryString();
 					});
