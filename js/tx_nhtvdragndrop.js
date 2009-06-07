@@ -1,5 +1,5 @@
 tx_nhtvdragndrop = function() {
-	var	url = '';
+	var url = '';
 	var currentItem;
 	var pub = {};
 
@@ -27,7 +27,7 @@ tx_nhtvdragndrop = function() {
 		currentItem = el;
 	};
 
-	 //todo: evaluate use of regExp instead of split.
+	 //TODO: Evaluate use of regExp instead of split.
 	rewriteButton = function(button, splitBy, newPointer) {
 		if ((p = button.href.split(splitBy)).length == 2) {
 			button.href = p[0] + splitBy + newPointer;
@@ -36,7 +36,7 @@ tx_nhtvdragndrop = function() {
 		return false;
 	};
 
-	 //todo: find a better way to rewrite.
+	 //TODO: Find a better way to rewrite.
 	updateItemButtons = function(item, container, index) {
 		var newPointer = container.id + index;
 		var itemChilds = item.childElements();
@@ -84,20 +84,21 @@ tx_nhtvdragndrop = function() {
 
 				currentItem = false;
 
-				 //todo: and some optimisation (source not changed etc.).
+
+				 //TODO: Add some optimisation (source not changed etc.).
 				if (pasteButtons = $$('a[href*="source"]')) {
 					pasteButtons.each(function(button) {
 						var queryParms = button.href.toQueryParams();
-							//todo: find a better way
-						if (queryParms['pasteRecord'] == 'ref');
-								return;
+						 //TODO: Find a better way
+						if (queryParms['pasteRecord'] == 'ref')
+							return;
 
 						queryParms['source'] = container.id + (index + 1);
 						button.href =  'index.php?' + $H(queryParms).toQueryString();
 					});
 				}
 			}
-
+			 //TODO: Find a way to handle problem with "hidden unused items"
 			index++;
 			updateItemButtons(item, container, index);
 			item.id = getIdByPointer(container.id + index);
