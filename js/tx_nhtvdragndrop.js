@@ -79,7 +79,7 @@ tx_nhtvdragndrop = function() {
 			if (currentItem && item.id == currentItem.id) {
 				new Ajax.Request(url +
 					'&ajaxID=tx_nhtvdragndrop_ajax::moveRecord&source=' +
-					getPointerById(item.id)	+
+					getPointerById(item.id) +
 					"&destination=" + (container.id + index));
 
 				currentItem = false;
