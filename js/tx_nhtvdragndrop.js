@@ -107,7 +107,7 @@ tx_nhtvdragndrop = function() {
 	};
 
 	pub.init = function(containers, linkParameters, siteRelPath) {
-		url =  siteRelPath + 'ajax.php?' +  linkParameters;
+		url =  siteRelPath + 'ajax.php?' + linkParameters;
 		containers.each(function(c) {
 			Sortable.create(c, {
 				tag: 'div',
