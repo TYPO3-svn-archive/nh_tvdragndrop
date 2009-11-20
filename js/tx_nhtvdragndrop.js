@@ -3,32 +3,25 @@ tx_nhtvdragndrop = function() {
 	var currentItem;
 	var pub = {};
 
-	debug = function(output) {
-		if ($('tx_nhtvdragndrop-debug') == null)
-			$('ext-templavoila-mod1-index-php').insert({
-				top: '<div id="tx_nhtvdragndrop-debug"></div>'});
-
-		$('tx_nhtvdragndrop-debug').insert({bottom: output + '<br />'});
-	};
-
-	getContainerIdByPointer = function(pointer) {
+	var getContainerIdByPointer = function(pointer) {
 		return pointer.substring(0, pointer.lastIndexOf(':') + 1);
 	};
 
-	getIdByPointer = function(pointer) {
+	var getIdByPointer = function(pointer) {
 		return 'tx_nhtvdragndrop-item_' + pointer;
 	};
 
-	getPointerById = function(id) {
+	var getPointerById = function(id) {
 		return id.split('tx_nhtvdragndrop-item_')[1];
 	};
 
-	change = function(el) {
+	var change = function(el) {
 		currentItem = el;
 	};
 
 	 //TODO: Evaluate use of regExp instead of split.
-	rewriteButton = function(button, splitBy, newPointer) {
+	var rewriteButton = function(button, splitBy, newPointer) {
+		var p;
 		if ((p = button.href.split(splitBy)).length == 2) {
 			button.href = p[0] + splitBy + newPointer;
 			return true;
@@ -37,25 +30,28 @@ tx_nhtvdragndrop = function() {
 	};
 
 	 //TODO: Find a better way to rewrite.
-	updateItemButtons = function(item, container, index) {
+	var updateItemButtons = function(item, container, index) {
+		var p, p1;
 		var newPointer = container.id + index;
 		var itemChilds = item.childElements();
 		var buttonBar =
 			itemChilds[0].childElements()[0].childElements()[0].childElements()[1];
 
 		buttonBar.select('a').each(function(button) {
-			if (button.href.charAt(button.href.length - 1) == "#")
+			if (button.href.charAt(button.href.length - 1) == "#") {
 				return;
+			}
 
 			if ((p = button.href.split('unlinkRecord')).length == 2) {
 				button.href = p[0] + 'unlinkRecord("' + newPointer + '");';
-				return
+				return;
 			}
 
 			if((p = button.href.split('CB[el][tt_content')).length == 2) {
 				p1 = p[1].split('=');
-				if (p1[1] != '1')
+				if (p1[1] != '1') {
 					button.href = p[0] + 'CB[el][tt_content' + p1[0]+ '=' + newPointer;
+				}
 			}
 
 		});
@@ -64,17 +60,18 @@ tx_nhtvdragndrop = function() {
 		rewriteButton(itemChilds[1], '&parentRecord=', newPointer);
 
 		 //Paste button
-		if (itemChilds[2])
+		if (itemChilds[2]) {
 			rewriteButton(itemChilds[2], '&destination=', newPointer);
-
+		}
 	};
 
-	updateContainer = function(container) {
+	var updateContainer = function(container) {
 		var index = 0;
-		var pastButtons;
+		var pasteButtons;
 		container.childElements().each(function(item){
-			if (item.id.indexOf('tx_nhtvdragndrop-item_') == -1)
+			if (item.id.indexOf('tx_nhtvdragndrop-item_') == -1) {
 				return;
+			}
 
 			if (currentItem && item.id == currentItem.id) {
 				new Ajax.Request(url +
@@ -86,14 +83,15 @@ tx_nhtvdragndrop = function() {
 
 
 				 //TODO: Add some optimisation (source not changed etc.).
-				if (pasteButtons = $$('a[href*="source"]')) {
+				if ((pasteButtons = $$('a[href*="source"]'))) {
 					pasteButtons.each(function(button) {
 						var queryParms = button.href.toQueryParams();
 						 //TODO: Find a better way
-						if (queryParms['pasteRecord'] == 'ref')
+						if (queryParms.pasteRecord == 'ref') {
 							return;
+						}
 
-						queryParms['source'] = container.id + (index + 1);
+						queryParms.source = container.id + (index + 1);
 						button.href =  'index.php?' + $H(queryParms).toQueryString();
 					});
 				}
