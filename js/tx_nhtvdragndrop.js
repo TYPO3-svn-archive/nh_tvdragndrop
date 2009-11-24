@@ -106,9 +106,10 @@ tx_nhtvdragndrop = function() {
 
 	pub.init = function(containers, linkParameters, siteRelPath) {
 		url =  siteRelPath + 'ajax.php?' + linkParameters;
+		 //TODO: Reactived handle option by the time prototype has been upgraded to 1.6.1
 		containers.each(function(c) {
 			Sortable.create(c, {
-				tag: 'div',	
+				tag: 'div',
 				dropOnEmpty: true,
 				constraint: false,
 				onChange: change,
