@@ -108,8 +108,7 @@ tx_nhtvdragndrop = function() {
 		url =  siteRelPath + 'ajax.php?' + linkParameters;
 		containers.each(function(c) {
 			Sortable.create(c, {
-				tag: 'div',
-				handle: 'sortable_handle',
+				tag: 'div',	
 				dropOnEmpty: true,
 				constraint: false,
 				onChange: change,
