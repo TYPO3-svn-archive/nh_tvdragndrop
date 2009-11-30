@@ -1,6 +1,7 @@
 tx_nhtvdragndrop = function() {
 	var url = '';
 	var currentItem;
+	var showHiddenElements;
 	var pub = {};
 
 	var getContainerIdByPointer = function(pointer) {
@@ -111,8 +112,10 @@ tx_nhtvdragndrop = function() {
 
 	};
 
-	pub.init = function(containers, linkParameters, siteRelPath) {
+	pub.init = function(containers, linkParameters, siteRelPath, showHidden) {
 		url =  siteRelPath + 'ajax.php?' + linkParameters;
+		showHiddenElements = showHidden;
+
 		 //TODO: Reactived handle option by the time prototype has been upgraded to 1.6.1
 		containers.each(function(c) {
 			Sortable.create(c, {
@@ -137,8 +140,19 @@ tx_nhtvdragndrop = function() {
 		);
 	};
 
+	/**
+	 * Hide the record, skeleton taken from the orginal TV js code. Thanks guys :)
+	 */
 	pub.hideRecord= function(element, command) {
-		jumpToUrl(command);
+		if (showHiddenElements) {
+			jumpToUrl(command);
+		} else {
+			 //TODO: Calling TCE_DB via ajax is a little costy. Find a better way.
+			new Ajax.Request(command);
+			 // We need to truncate the surrounding div instead of removing it
+			 // in order to keep the element order.
+			element.up('div.sortableItem',0).update('');
+		}
 	};
 
 	/**
