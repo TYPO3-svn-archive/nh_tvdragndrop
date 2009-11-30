@@ -31,13 +31,18 @@ tx_nhtvdragndrop = function() {
 
 	 //TODO: Find a better way to rewrite.
 	var updateItemButtons = function(item, container, index) {
-		var p, p1;
-		var newPointer = container.id + index;
 		var itemChilds = item.childElements();
+		if (itemChilds.length == 0)
+			return;
+
+		var p, p1;
+		var newPointer = getPointerById(container.id) + index;
+
 		var buttonBar =
 			itemChilds[0].childElements()[0].childElements()[0].childElements()[1];
 
 		buttonBar.select('a').each(function(button) {
+
 			if (button.href.charAt(button.href.length - 1) == "#") {
 				return;
 			}
@@ -60,14 +65,16 @@ tx_nhtvdragndrop = function() {
 		rewriteButton(itemChilds[1], '&parentRecord=', newPointer);
 
 		 //Paste button
-		if (itemChilds[2]) {
-			rewriteButton(itemChilds[2], '&destination=', newPointer);
+		if (itemChilds[3]) {
+			rewriteButton(itemChilds[3], '&destination=', newPointer);
 		}
 	};
 
 	var updateContainer = function(container) {
 		var index = 0;
 		var pasteButtons;
+		var containerPointer = getPointerById(container.id);
+
 		container.childElements().each(function(item){
 			if (item.id.indexOf('tx_nhtvdragndrop-item_') == -1) {
 				return;
@@ -77,7 +84,7 @@ tx_nhtvdragndrop = function() {
 				new Ajax.Request(url +
 					'&ajaxID=tx_nhtvdragndrop_ajax::moveRecord&source=' +
 					getPointerById(item.id) +
-					"&destination=" + (container.id + index));
+					"&destination=" + (containerPointer + index));
 
 				currentItem = false;
 
@@ -91,7 +98,7 @@ tx_nhtvdragndrop = function() {
 							return;
 						}
 
-						queryParms.source = container.id + (index + 1);
+						queryParms.source = containerPointer + (index + 1);
 						button.href =  'index.php?' + $H(queryParms).toQueryString();
 					});
 				}
@@ -99,7 +106,7 @@ tx_nhtvdragndrop = function() {
 			 //TODO: Find a way to handle problem with "hidden unused items"
 			index++;
 			updateItemButtons(item, container, index);
-			item.id = getIdByPointer(container.id + index);
+			item.id = getIdByPointer(containerPointer + index);
 		});
 
 	};
@@ -110,6 +117,7 @@ tx_nhtvdragndrop = function() {
 		containers.each(function(c) {
 			Sortable.create(c, {
 				tag: 'div',
+				/* handle: 'sortable_handle', */
 				dropOnEmpty: true,
 				constraint: false,
 				onChange: change,
@@ -127,7 +135,17 @@ tx_nhtvdragndrop = function() {
 				}
 			}
 		);
+	};
 
+	pub.hideRecord= function(element, command) {
+		jumpToUrl(command);
+	};
+
+	/**
+	 * Unhide the record, taken from the orginal TV js code. Thanks guys :)
+	 */
+	pub.unhideRecord= function(element, command) {
+		jumpToUrl(command);
 	};
 
 	return pub;
