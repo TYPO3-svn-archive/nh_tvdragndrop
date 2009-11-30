@@ -141,22 +141,27 @@ tx_nhtvdragndrop = function() {
 	};
 
 	/**
-	 * Hide the record, skeleton taken from the orginal TV js code. Thanks guys :)
+	 * Hide the record. Skeleton taken from the orginal TV js code. Thanks guys :)
 	 */
 	pub.hideRecord= function(element, command) {
 		if (showHiddenElements) {
 			jumpToUrl(command);
 		} else {
+			var sortableItem = element.up('div.sortableItem',0);
 			 //TODO: Calling TCE_DB via ajax is a little costy. Find a better way.
 			new Ajax.Request(command);
-			 // We need to truncate the surrounding div instead of removing it
-			 // in order to keep the element order.
-			element.up('div.sortableItem',0).update('');
+			new Effect.Fade(sortableItem, {duration: 0.5, afterFinish: function () {
+				 // We need to truncate the surrounding div instead of removing it
+				 // in order to keep the element order.
+				sortableItem.update('');
+			}});
+
+
 		}
 	};
 
 	/**
-	 * Unhide the record, taken from the orginal TV js code. Thanks guys :)
+	 * Unhide the record. Taken from the orginal TV js code. Thanks guys :)
 	 */
 	pub.unhideRecord= function(element, command) {
 		jumpToUrl(command);
