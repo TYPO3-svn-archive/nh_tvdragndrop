@@ -1,3 +1,31 @@
+ //We need to override the prototypes selector.findeElements in order to workarround:
+ //https://prototype.lighthouseapp.com/projects/8886/tickets/728-selectorfindelements-id-replacement-problems-in-ff-35-safari-4.
+ //TODO: Remove after TYPO3 upgraded prototype to 1.6.1.
+Selector.addMethods({
+	findElements: function(root) {
+		root = root || document;
+		var e = this.expression, results;
+
+		switch (this.mode) {
+			case 'selectorsAPI':
+				if (root !== document) {
+					var oldId = root.id, id = $(root).identify();
+					id = id.replace(/([\.:])/g, "\\$1");
+					e = "#" + id + " " + e;
+				}
+
+				results = $A(root.querySelectorAll(e)).map(Element.extend);
+				root.id = oldId;
+
+				return results;
+			case 'xpath':
+				return document._getElementsByXPath(this.xpath, root);
+			default:
+				return this.matcher(root);
+		}
+	}
+});
+
 tx_nhtvdragndrop = function() {
 	var url = '';
 	var currentItem;
@@ -120,7 +148,7 @@ tx_nhtvdragndrop = function() {
 		containers.each(function(c) {
 			Sortable.create(c, {
 				tag: 'div',
-				/* handle: 'sortable_handle', */
+				handle: 'sortable_handle',
 				dropOnEmpty: true,
 				constraint: false,
 				onChange: change,
