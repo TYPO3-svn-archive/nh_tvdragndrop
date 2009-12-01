@@ -112,8 +112,8 @@ tx_nhtvdragndrop = function() {
 			if (currentItem && item.id == currentItem.id) {
 				new Ajax.Request(url +
 					'&ajaxID=tx_nhtvdragndrop_ajax::moveRecord&source=' +
-					getPointerById(item.id) +
-					"&destination=" + (containerPointer + index));
+					escape(getPointerById(item.id)) +
+					"&destination=" + escape((containerPointer + index)));
 
 				currentItem = false;
 
@@ -159,7 +159,7 @@ tx_nhtvdragndrop = function() {
 
 	pub.unlinkRecord = function(pointer) {
 		new Ajax.Request(url +
-			'&ajaxID=tx_nhtvdragndrop_ajax::unlinkRecord&unlink=' + pointer);
+			'&ajaxID=tx_nhtvdragndrop_ajax::unlinkRecord&unlink=' + escape(pointer));
 
 		var elementId = getIdByPointer(pointer) ;
 
