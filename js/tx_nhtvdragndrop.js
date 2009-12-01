@@ -1,4 +1,4 @@
- //We need to override the prototypes selector.findeElements in order to workarround:
+ //We need to override the prototypes selector.findElements in order to workarround:
  //https://prototype.lighthouseapp.com/projects/8886/tickets/728-selectorfindelements-id-replacement-problems-in-ff-35-safari-4.
  //TODO: Remove after TYPO3 upgraded prototype to 1.6.1.
 Selector.addMethods({
@@ -33,7 +33,7 @@ tx_nhtvdragndrop = function() {
 	var pub = {};
 
 	var getContainerIdByPointer = function(pointer) {
-		return pointer.substring(0, pointer.lastIndexOf(':') + 1);
+		return 'tx_nhtvdragndrop-item_' + pointer.substring(0, pointer.lastIndexOf(':') + 1);
 	};
 
 	var getIdByPointer = function(pointer) {
@@ -159,13 +159,14 @@ tx_nhtvdragndrop = function() {
 
 	pub.unlinkRecord = function(pointer) {
 		new Ajax.Request(url +
-			'&ajaxID=tx_nhtvdragndrop_ajax::unlinkRecord&unlink=' + pointer, {
-				onComplete: function() {
-					$(getIdByPointer(pointer)).remove();
-					updateContainer($(getContainerIdByPointer(pointer)));
-				}
-			}
-		);
+			'&ajaxID=tx_nhtvdragndrop_ajax::unlinkRecord&unlink=' + pointer);
+
+		var elementId = getIdByPointer(pointer) ;
+
+		new Effect.Fade(elementId, {duration: 0.5, afterFinish: function () {
+			$(elementId).remove();
+			updateContainer($(getContainerIdByPointer(pointer)));
+		}});
 	};
 
 	/**
