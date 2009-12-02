@@ -109,10 +109,6 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 
 			);
 
-				//Prototype /Scriptaculous
-				// prototype is loaded before, so no need to include twice.
-				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
-			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
 			$this->doc->loadJavascriptLib('../' . t3lib_extMgm::siteRelPath('nh_tvdragndrop') .
 				'js/tx_nhtvdragndrop-min.js');

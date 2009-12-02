@@ -176,7 +176,8 @@ tx_nhtvdragndrop = function() {
 		if (showHiddenElements) {
 			jumpToUrl(command);
 		} else {
-			var sortableItem = element.up('div.sortableItem',0);
+			var sortableItem = $(element).up('div.sortableItem');
+
 			 //TODO: Calling TCE_DB via ajax is a little costy. Find a better way.
 			new Ajax.Request(command);
 			new Effect.Fade(sortableItem, {duration: 0.5, afterFinish: function () {
