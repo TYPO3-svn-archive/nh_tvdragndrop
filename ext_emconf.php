@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "nh_tvdragndrop".
 #
-# Auto generated 23-11-2009 16:55
+# Auto generated 02-12-2009 18:16
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => '',
 	'category' => 'be',
 	'shy' => 0,
-	'version' => '0.0.11',
+	'version' => '0.0.12',
 	'dependencies' => 'templavoila,cms',
 	'conflicts' => '',
 	'priority' => '',
@@ -43,7 +43,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:10:{s:9:"ChangeLog";s:4:"7067";s:10:"README.txt";s:4:"ee2d";s:31:"class.tx_nhtvdragndrop_ajax.php";s:4:"d000";s:35:"class.ux_tx_templavoila_module1.php";s:4:"6c45";s:12:"ext_icon.gif";s:4:"e3bf";s:17:"ext_localconf.php";s:4:"bd77";s:14:"doc/manual.sxw";s:4:"acd9";s:19:"doc/wizard_form.dat";s:4:"a992";s:20:"doc/wizard_form.html";s:4:"f31e";s:22:"js/tx_nhtvdragndrop.js";s:4:"44f3";}',
+	'_md5_values_when_last_written' => 'a:11:{s:9:"ChangeLog";s:4:"7067";s:10:"README.txt";s:4:"ee2d";s:31:"class.tx_nhtvdragndrop_ajax.php";s:4:"d000";s:35:"class.ux_tx_templavoila_module1.php";s:4:"3d76";s:12:"ext_icon.gif";s:4:"e3bf";s:17:"ext_localconf.php";s:4:"bd77";s:14:"doc/manual.sxw";s:4:"cb98";s:19:"doc/wizard_form.dat";s:4:"a992";s:20:"doc/wizard_form.html";s:4:"f31e";s:26:"js/tx_nhtvdragndrop-min.js";s:4:"00c8";s:22:"js/tx_nhtvdragndrop.js";s:4:"38f9";}',
 	'suggests' => array(
 	),
 );

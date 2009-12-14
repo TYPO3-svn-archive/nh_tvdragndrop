@@ -1,34 +1,37 @@
  //We need to override the prototypes selector.findElements in order to workarround:
  //https://prototype.lighthouseapp.com/projects/8886/tickets/728-selectorfindelements-id-replacement-problems-in-ff-35-safari-4.
  //TODO: Remove after TYPO3 upgraded prototype to 1.6.1.
-Selector.addMethods({
-	findElements: function(root) {
-		root = root || document;
-		var e = this.expression, results;
+if (Prototype.Version == '1.6.0.3') {
+	Selector.addMethods({
+		findElements: function(root) {
+			root = root || document;
+			var e = this.expression, results;
 
-		switch (this.mode) {
-			case 'selectorsAPI':
-				if (root !== document) {
-					var oldId = root.id, id = $(root).identify();
-					id = id.replace(/([\.:])/g, "\\$1");
-					e = "#" + id + " " + e;
-				}
+			switch (this.mode) {
+				case 'selectorsAPI':
+					if (root !== document) {
+						var oldId = root.id, id = $(root).identify();
+						id = id.replace(/([\.:])/g, "\\$1");
+						e = "#" + id + " " + e;
+					}
 
-				results = $A(root.querySelectorAll(e)).map(Element.extend);
-				root.id = oldId;
+					results = $A(root.querySelectorAll(e)).map(Element.extend);
+					root.id = oldId;
 
-				return results;
-			case 'xpath':
-				return document._getElementsByXPath(this.xpath, root);
-			default:
-				return this.matcher(root);
+					return results;
+				case 'xpath':
+					return document._getElementsByXPath(this.xpath, root);
+				default:
+					return this.matcher(root);
+			}
 		}
-	}
-});
+	});
+}
 
 tx_nhtvdragndrop = function() {
 	var url = '';
 	var currentItem;
+	var mode = '';
 	var showHiddenElements;
 	var pub = {};
 
@@ -144,7 +147,6 @@ tx_nhtvdragndrop = function() {
 		url =  siteRelPath + 'ajax.php?' + linkParameters;
 		showHiddenElements = showHidden;
 
-		 //TODO: Reactived handle option by the time prototype has been upgraded to 1.6.1
 		containers.each(function(c) {
 			Sortable.create(c, {
 				tag: 'div',
@@ -185,8 +187,6 @@ tx_nhtvdragndrop = function() {
 				 // in order to keep the element order.
 				sortableItem.update('');
 			}});
-
-
 		}
 	};
 

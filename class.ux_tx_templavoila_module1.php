@@ -198,7 +198,7 @@ class ux_tx_templavoila_module1 extends tx_templavoila_module1 {
 						implode('\',\'', $this->sortableContainers) . '\'], \'' .
 						$this->link_getParameters() .
 						'\', \'' . $this->doc->backPath . '\', ' .
-						$this->MOD_SETTINGS['tt_content_showHidden'] .');})');
+						($this->MOD_SETTINGS['tt_content_showHidden'] ? 1 : 0) .');})');
 				}
 			}
 
